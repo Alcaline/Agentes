@@ -17,12 +17,9 @@ import java.util.ArrayList;
  */
 public class RenderPanel extends DrawPanel{
     final protected List<Renderizable> renderObjects = new ArrayList<>();
-        
-    final public Font TEXT_FONT        = Font.decode("Arial-BOLD-18");
-    final public Color TEXT_COLOR      = new Color(0x404040);    
 
     @Override
-    public void draw(){       
+    protected void draw(){       
         for(Renderizable rObj: renderObjects)
             rObj.render(this);
     }

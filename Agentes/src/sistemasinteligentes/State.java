@@ -11,7 +11,6 @@ public class State implements Renderizable, Comparable<State>{
     final public Color STATE_COLOR     = new Color(0xb0f010);
     final public Color STATE_BORDER    = new Color(0x606060);
     final public int STATE_RADIUS      = 20;
-    final public int TEXT_OFFSET       = 6;
     
     private int x;
     private int y;
@@ -36,7 +35,7 @@ public class State implements Renderizable, Comparable<State>{
     @Override
     public void render(RenderPanel mp) {
         mp.drawCircle(x, y, STATE_RADIUS, STATE_COLOR, STATE_BORDER);
-        mp.drawText(x-TEXT_OFFSET*name.length(), y+TEXT_OFFSET, name, mp.TEXT_COLOR, mp.TEXT_FONT);
+        mp.drawText(x, y, name, mp.TEXT_COLOR, mp.TEXT_FONT, mp.VALIGN_MIDDLE, mp.HALIGN_CENTER);
     }
 
     @Override

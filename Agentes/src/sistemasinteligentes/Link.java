@@ -13,7 +13,6 @@ import java.awt.Color;
  */
 public class Link implements Renderizable{
     final public Color LINK_COLOR      = new Color(0xf08040);
-    final public int TEXT_OFFSET       = 6;
 
     private State first;
     private State second;
@@ -28,7 +27,7 @@ public class Link implements Renderizable{
     @Override
     public void render(RenderPanel mp) {
         mp.drawLine(first.getX(), first.getY(), second.getX(), second.getY(), LINK_COLOR);
-        mp.drawText((first.getX()+second.getX())/2 - TEXT_OFFSET*String.valueOf(weight).length(), (first.getY()+second.getY())/2 + TEXT_OFFSET, 
-                String.valueOf(weight), mp.TEXT_COLOR, mp.TEXT_FONT);
+        mp.drawText((first.getX()+second.getX())/2, (first.getY()+second.getY())/2, 
+                String.valueOf(weight), mp.TEXT_COLOR, mp.TEXT_FONT, mp.VALIGN_MIDDLE, mp.HALIGN_CENTER);
     }
 }

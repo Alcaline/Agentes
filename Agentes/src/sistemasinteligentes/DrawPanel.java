@@ -10,6 +10,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.font.TextLayout;
 import javax.swing.JPanel;
 
 /**
@@ -19,8 +20,19 @@ import javax.swing.JPanel;
 public class DrawPanel extends JPanel {
     protected Graphics2D g2d;
     
-    final public Color BG_COLOR        = new Color(0xefffff);
-    final public Color BORDER_COLOR    = new Color(0x808080);
+    final public Color BG_COLOR         = new Color(0xefffff);
+    final public Color BORDER_COLOR     = new Color(0x808080);
+        
+    final public Font TEXT_FONT         = Font.decode("Arial-BOLD-18");
+    final public Color TEXT_COLOR       = new Color(0x404040);    
+    
+    final public float VALIGN_MIDDLE    = 0.5f;
+    final public float VALIGN_BOTTON    = 1.0f;
+    final public float VALIGN_TOP       = 0.0f;
+    final public float HALIGN_CENTER    = 0.5f;
+    final public float HALIGN_RIGHT     = 1.0f;
+    final public float HALIGN_LEFT      = 0.0f;
+    
 
     @Override
     public void paintComponent(Graphics g){
@@ -32,7 +44,7 @@ public class DrawPanel extends JPanel {
         drawBorder();
     }
     
-    private void preDraw(){
+    protected void preDraw(){
         g2d.setPaintMode();
         g2d.setRenderingHint(
                 RenderingHints.KEY_ANTIALIASING,
@@ -65,9 +77,13 @@ public class DrawPanel extends JPanel {
         g2d.drawLine(x1, y1, x2, y2);
     }
     
-    public void drawText(int x, int y, String text, Color fontColor, Font font) {
+    public void drawText(int x, int y, String text, Color fontColor, Font font, float vAlignment, float hAlignment) {
+        TextLayout tl = new TextLayout(text, font, g2d.getFontRenderContext());
+        double h = tl.getBounds().getHeight();
+        double w = tl.getBounds().getWidth();
         g2d.setColor(fontColor);
         g2d.setFont(font);
-        g2d.drawString(text, x, y);
+        tl.draw(g2d,(int) (x - w*hAlignment), (int) (y + h*vAlignment));
     }
+
 }
