@@ -19,19 +19,17 @@ public class Agent implements Renderizable{
     
     private State current;
     private State objective;
-    private List<State> solution;
+    private Ambient ambient;
+    private List<Action> solution;
     
-    public Agent(State current, State objective, List<State> solution){
+    public Agent(State current, State objective, Ambient ambient, List<Action> solution){
         this.current = current;
         this.objective = objective;
+        this.ambient = ambient;
         this.solution = solution;
     }
     
     public void advance(){
-        int i = solution.indexOf(current);
-        i++;
-        if(i < solution.size())
-            current = solution.get(i);
     }
             
     public void percept(){

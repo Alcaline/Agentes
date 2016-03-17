@@ -42,16 +42,22 @@ public class SistemasInteligentes {
         gui.setVisible(true);
            
         State st1 = new State(30,30,"A",0);
-        State st2 = new State(300,100,"B",1);
-        List<State> list = new ArrayList<State>();
-        list.add(st1);
-        list.add(st2);
-        Agent ag = new Agent(st1,st2,list);
-        Link link = new Link(st1,st2,20);
+        State st2 = new State(300,120,"B",1);
+        State st3 = new State(300,30,"C",2);
+        Ambient amb = new Ambient();
+        amb.addState(st1);
+        amb.addState(st2);
+        amb.addState(st3);
+        amb.addWeight(st1, st2, 20);
+        amb.addWeight(st2, st3, 15);
+        amb.addWeight(st1, st3, 25);
+        List<Action> list = new ArrayList<Action>();
+        list.add(new GoToAction(amb.getLink(0, 1)));
+        list.add(new GoToAction(amb.getLink(1, 2)));
+        list.add(new GoToAction(amb.getLink(0, 2)));
+        Agent ag = new Agent(st1,st3,amb,list);
         gui.assignRenderizable(ag);
-        gui.assignRenderizable(link);
-        gui.assignRenderizable(st1);
-        gui.assignRenderizable(st2);
+        gui.assignRenderizable(amb);
         
         gui.setAgent(ag);
     }    

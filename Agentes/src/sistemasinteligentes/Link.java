@@ -23,6 +23,18 @@ public class Link implements Renderizable{
         this.second = second;
         this.weight = weight;
     }
+    
+    public State getFirst(){
+        return first;
+    }
+    
+    public State getSecond(){
+        return second;
+    }
+    
+    public int getWeight(){
+        return weight;
+    }
 
     @Override
     public void render(RenderPanel mp) {
