@@ -32,6 +32,10 @@ public class State implements Renderizable, Comparable<State>{
         return y;
     }
     
+    public int getID(){
+        return id;
+    }    
+    
     @Override
     public void render(RenderPanel mp) {
         mp.drawCircle(x, y, STATE_RADIUS, STATE_COLOR, STATE_BORDER);

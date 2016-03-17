@@ -42,7 +42,7 @@ public class Agent implements Renderizable{
         
     }
     
-    public void act(){
+    public void execute(){
         
     }
     
