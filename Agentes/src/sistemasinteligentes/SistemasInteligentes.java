@@ -41,24 +41,31 @@ public class SistemasInteligentes {
         GUI gui = new GUI();
         gui.setVisible(true);
            
-        State st1 = new State(30,30,"A",0);
-        State st2 = new State(300,120,"B",1);
-        State st3 = new State(300,30,"C",2);
+        State portalGraciosa = new State(30,30,"PG",0);
+        State saoJoao = new State(300,120,"SJ",1);
+        State bufara = new State(300,30,"B",2);
+        State morretes = new State(200,10,"M",3);
+        State antonina = new State(80,20,"A",4);
+        
         Ambient amb = new Ambient();
-        amb.addState(st1);
-        amb.addState(st2);
-        amb.addState(st3);
-        amb.addWeight(st1, st2, 20);
-        amb.addWeight(st2, st3, 15);
-        amb.addWeight(st1, st3, 25);
+        amb.addState(portalGraciosa);
+        amb.addState(saoJoao);
+        amb.addState(bufara);
+        amb.addState(antonina);
+        amb.addState(morretes);
+        amb.addWeight(portalGraciosa, saoJoao, 18);
+        amb.addWeight(saoJoao, morretes, 14);
+        amb.addWeight(saoJoao, bufara, 18);
+        amb.addWeight(bufara, antonina, 8);
+        amb.addWeight(morretes, bufara, 8);
+        //cria o vetor solução
         List<Action> list = new ArrayList<Action>();
         list.add(new GoToAction(amb.getLink(0, 1)));
         list.add(new GoToAction(amb.getLink(1, 2)));
-        list.add(new GoToAction(amb.getLink(0, 2)));
-        Agent ag = new Agent(st1,st3,amb,list);
+        list.add(new GoToAction(amb.getLink(2, 4)));
+        Agent ag = new Agent(portalGraciosa,antonina,amb,list);
         gui.assignRenderizable(ag);
         gui.assignRenderizable(amb);
-        
         gui.setAgent(ag);
     }    
 }

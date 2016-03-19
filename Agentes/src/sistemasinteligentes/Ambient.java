@@ -94,6 +94,10 @@ public class Ambient implements Renderizable{
         else
             return null;
     }
+    
+    public int getWeight(State init, State fin){
+        return weights.get(init.getID()).get(fin.getID()).intValue();
+    }
 
     @Override
     public void render(RenderPanel mp) {
