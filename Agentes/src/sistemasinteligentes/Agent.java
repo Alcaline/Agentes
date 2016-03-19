@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author Jacichen
  */
-public class Agent implements Renderizable{
+public class Agent implements Renderizable, Printable{
     final public Color AGENT_COLOR     = new Color(0x6070f0);
     final public Color AGENT_BORDER    = new Color(0xa0c0e0);
     final public int AGENT_RADIUS      = 25;
@@ -21,6 +21,9 @@ public class Agent implements Renderizable{
     private State objective;
     private Ambient ambient;
     private List<Action> solution;
+    
+    //Variavel de teste
+    boolean state = false;
     
     public Agent(State current, State objective, Ambient ambient, List<Action> solution){
         this.current = current;
@@ -47,6 +50,14 @@ public class Agent implements Renderizable{
     @Override
     public void render(RenderPanel mp) {
         mp.drawCircle(current.getX(), current.getY(), AGENT_RADIUS, AGENT_COLOR, AGENT_BORDER);
+    }
+
+    @Override
+    public String printText() {
+        if(state = !state)
+            return "Texto de Teste 1";
+        else
+            return "Texto de Teste 2";
     }
     
 }

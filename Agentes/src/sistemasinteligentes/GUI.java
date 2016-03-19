@@ -11,11 +11,13 @@ package sistemasinteligentes;
  */
 public class GUI extends javax.swing.JFrame {
     private Agent agent;
+    private TextPrinter printer;
     /**
      * Creates new form Interface
      */
     public GUI() {
         initComponents();
+        printer = new JTextAreaPrinter(terminalBox);
     }
 
     /**
@@ -89,6 +91,7 @@ public class GUI extends javax.swing.JFrame {
     private void continueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_continueButtonActionPerformed
         agent.advance();
         renderPanel.repaint();
+        printer.update();
     }//GEN-LAST:event_continueButtonActionPerformed
     
     public void assignRenderizable(Renderizable rend){
@@ -97,6 +100,14 @@ public class GUI extends javax.swing.JFrame {
     
     public void unasignRenderizable(Renderizable rend){
         renderPanel.unassignRenderizable(rend);
+    }
+    
+    public void assignPrintable(Printable p){
+        printer.assignPrintable(p);
+    }
+    
+    public void unassignPrintable(Printable p){
+        printer.unassignPrintable(p);
     }
 
     public void setAgent(Agent agent){

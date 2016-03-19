@@ -58,6 +58,7 @@ public class SistemasInteligentes {
         Agent ag = new Agent(st1,st3,amb,list);
         gui.assignRenderizable(ag);
         gui.assignRenderizable(amb);
+        gui.assignPrintable(ag);
         
         gui.setAgent(ag);
     }    
