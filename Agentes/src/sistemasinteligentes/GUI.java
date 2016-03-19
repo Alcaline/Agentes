@@ -87,8 +87,8 @@ public class GUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void continueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_continueButtonActionPerformed
-        agent.advance();
-        renderPanel.repaint();
+        agent.percept();
+       // renderPanel.repaint();
     }//GEN-LAST:event_continueButtonActionPerformed
     
     public void assignRenderizable(Renderizable rend){
@@ -101,6 +101,11 @@ public class GUI extends javax.swing.JFrame {
 
     public void setAgent(Agent agent){
         this. agent = agent; 
+    }
+    
+    public void printText(String text)
+    {
+        terminalBox.setText(text);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
