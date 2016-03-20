@@ -24,6 +24,10 @@ public class State implements Renderizable, Comparable<State>{
         this.id = id;
     }
     
+    public String getName(){
+        return name;
+    }
+    
     public int getX(){
         return x;
     }

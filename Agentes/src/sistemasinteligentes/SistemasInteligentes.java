@@ -67,6 +67,6 @@ public class SistemasInteligentes {
         gui.assignRenderizable(ag);
         gui.assignRenderizable(amb);
         gui.assignPrintable(ag);
-        
+      
     }    
 }

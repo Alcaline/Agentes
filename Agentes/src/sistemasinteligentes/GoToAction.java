@@ -19,6 +19,8 @@ public class GoToAction extends Action{
     public GoToAction(Link link) {
         super(link);
     }
+    
+  
 
     @Override
     public State doExecute() {

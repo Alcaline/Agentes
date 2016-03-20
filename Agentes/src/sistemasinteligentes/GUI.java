@@ -89,7 +89,6 @@ public class GUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void continueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_continueButtonActionPerformed
-        agent.advance();
         renderPanel.repaint();
         printer.update();
     }//GEN-LAST:event_continueButtonActionPerformed
@@ -114,10 +113,6 @@ public class GUI extends javax.swing.JFrame {
         this. agent = agent; 
     }
     
-    public void printText(String text)
-    {
-        terminalBox.setText(text);
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton continueButton;

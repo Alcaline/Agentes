@@ -17,40 +17,30 @@ public class Agent implements Renderizable, Printable{
     final public Color AGENT_BORDER    = new Color(0xa0c0e0);
     final public int AGENT_RADIUS      = 25;
     
-    private GUI g = new GUI();
+    
     private State current;
     private State objective;
     private Ambient ambient;
-    private List<Action> solution;
+    private List<GoToAction> solution;
     
     //Variavel de teste
     boolean state = false;
     
-    public Agent(State current, State objective, Ambient ambient, List<Action> solution){
+    public Agent(State current, State objective, Ambient ambient, List<GoToAction> solution){
         this.current = current;
         this.objective = objective;
         this.ambient = ambient;
         this.solution = solution;
     }
     
-     public void advance()
-     {
-         
-     }
     public void percept(){
-      
-        g.printText("Environment's perceptions");
-      //  for(int n=0;n<solution.size()-1;n++){
-      //      if(ambient.getLink(current,ambient.getState(n) )!=null)
-      //          g.printText("State:"+ n + ambient.getState(n));
-                
-      //  }
-        
-    }
-    
+       
+     }
+       
     public void choose(){
-        
-        
+        current = solution;
+            
+        System.out.println(current);   
        
     }
     
@@ -65,10 +55,14 @@ public class Agent implements Renderizable, Printable{
 
     @Override
     public String printText() {
-        if(state = !state)
-            return "Texto de Teste 1";
-        else
-            return "Texto de Teste 2";
-    }
+       
+         for(int n=0;n<solution.size()-1;n++){
+            if(ambient.getLink(current,ambient.getState(n) )!=null)
+            {  
+              return ("States on the border of  "+ current.getName() +": "+ ambient.getState(n).getName());
+            }   
+         }
+         return "oi";
+    } 
     
 }
