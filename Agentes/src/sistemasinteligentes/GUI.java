@@ -113,6 +113,11 @@ public class GUI extends javax.swing.JFrame {
     public void setAgent(Agent agent){
         this. agent = agent; 
     }
+    
+    public void printText(String text)
+    {
+        terminalBox.setText(text);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton continueButton;
