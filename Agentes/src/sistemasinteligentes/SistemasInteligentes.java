@@ -40,12 +40,12 @@ public class SistemasInteligentes {
         
         GUI gui = new GUI();
         gui.setVisible(true);
-           
-        State portalGraciosa = new State(30,30,"PG",0);
-        State saoJoao = new State(300,120,"SJ",1);
-        State bufara = new State(300,30,"B",2);
-        State morretes = new State(200,10,"M",3);
-        State antonina = new State(80,20,"A",4);
+
+        State portalGraciosa = new State(30,80,"PG",0);
+        State saoJoao = new State(130,80,"SJ",1);
+        State bufara = new State(230,30,"B",2);
+        State morretes = new State(230,120,"M",3);
+        State antonina = new State(330,80,"A",4);
         
         Ambient amb = new Ambient();
         amb.addState(portalGraciosa);
@@ -68,6 +68,5 @@ public class SistemasInteligentes {
         gui.assignRenderizable(amb);
         gui.assignPrintable(ag);
         
-        gui.setAgent(ag);
     }    
 }
