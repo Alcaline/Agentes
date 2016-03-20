@@ -1,22 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package sistemasinteligentes;
+package sistemasinteligentes.model;
 
+import sistemasinteligentes.view.IRenderizable;
+import sistemasinteligentes.view.graphics.RenderPanel;
 import java.awt.Color;
 
-/**
- *
- * @author Jacichen
- */
-public class Link implements Renderizable{
+
+//Classe utilizado para representar uma conexão de dois estados.
+//Todas as ações utilizam links para identificar a transição.
+//Ambient utiliza um grafo para representar com maior eficiencia, mas
+//cri dinamicamente links para representação externa
+public class Link implements IRenderizable{
     final public Color LINK_COLOR      = new Color(0xf08040);
 
-    private State first;
-    private State second;
-    private int weight;
+    private final State first;
+    private final State second;
+    private final int weight;
     
     public Link(State first, State second, int weight){
         this.first = first;

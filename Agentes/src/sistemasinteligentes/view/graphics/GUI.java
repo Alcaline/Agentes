@@ -1,20 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package sistemasinteligentes;
+package sistemasinteligentes.view.graphics;
 
-/**
- *
- * @author Jacichen
- */
+import sistemasinteligentes.model.Agent;
+import sistemasinteligentes.view.IPrintable;
+import sistemasinteligentes.view.IRenderizable;
+
 public class GUI extends javax.swing.JFrame {
     private Agent agent;
-    private TextPrinter printer;
-    /**
-     * Creates new form Interface
-     */
+    private AbstractTextPrinter printer;
+    
     public GUI() {
         initComponents();
         printer = new JTextAreaPrinter(terminalBox);
@@ -32,7 +25,7 @@ public class GUI extends javax.swing.JFrame {
         terminalScroll = new javax.swing.JScrollPane();
         terminalBox = new javax.swing.JTextArea();
         continueButton = new javax.swing.JButton();
-        renderPanel = new sistemasinteligentes.RenderPanel();
+        renderPanel = new sistemasinteligentes.view.graphics.RenderPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -92,31 +85,37 @@ public class GUI extends javax.swing.JFrame {
         renderPanel.repaint();
         printer.update();
     }//GEN-LAST:event_continueButtonActionPerformed
-    
-    public void assignRenderizable(Renderizable rend){
+  
+    //Para renderizar um objeto, utilize esta função para adiciona-lo à lista de exibição
+    public void assignRenderizable(IRenderizable rend){
         renderPanel.assignRenderizable(rend);
     }
     
-    public void unasignRenderizable(Renderizable rend){
+    //Retira o objeto da lista de renderização
+    public void unasignRenderizable(IRenderizable rend){
         renderPanel.unassignRenderizable(rend);
     }
     
-    public void assignPrintable(Printable p){
+    //Para imprimir mensagens de um objeto, utilize esta função para adiciona-lo à lista de exibição
+    public void assignPrintable(IPrintable p){
         printer.assignPrintable(p);
     }
     
-    public void unassignPrintable(Printable p){
+    //Retira o objeto da lista de exibição
+    public void unassignPrintable(IPrintable p){
         printer.unassignPrintable(p);
     }
 
+    //Esta deve ser uma variável provisória - o agente deveria ser capaz 
+    //de notificar uma mudança para esta classe de uma forma que um não 
+    //fosse tão dependente do outro (criando um Observer por exemplo)
     public void setAgent(Agent agent){
         this. agent = agent; 
     }
-    
-
+   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton continueButton;
-    private sistemasinteligentes.RenderPanel renderPanel;
+    private sistemasinteligentes.view.graphics.RenderPanel renderPanel;
     private javax.swing.JTextArea terminalBox;
     private javax.swing.JScrollPane terminalScroll;
     // End of variables declaration//GEN-END:variables

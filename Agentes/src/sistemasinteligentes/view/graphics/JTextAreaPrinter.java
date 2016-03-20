@@ -1,17 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package sistemasinteligentes;
+package sistemasinteligentes.view.graphics;
 
 import javax.swing.JTextArea;
+import sistemasinteligentes.view.IPrintable;
 
-/**
- *
- * @author Jacichen
- */
-public class JTextAreaPrinter extends TextPrinter{
+//Esta classe associa um JTextArea com objetos que desejam enviar a ele mensagens
+public class JTextAreaPrinter extends AbstractTextPrinter{
     final private JTextArea printer;
     
     private JTextAreaPrinter(){
@@ -25,13 +18,13 @@ public class JTextAreaPrinter extends TextPrinter{
     }
 
     @Override
-    void update() {
+    public void update() {
         clear();
-        for(Printable p: printList)
+        for(IPrintable p: printList)
             printer.append(p.printText());
     }
 
-    void clear() {
+    public void clear() {
         printer.setText(null);
     }
     

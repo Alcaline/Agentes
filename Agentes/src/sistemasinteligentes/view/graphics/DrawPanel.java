@@ -1,9 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package sistemasinteligentes;
+package sistemasinteligentes.view.graphics;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -14,10 +9,6 @@ import java.awt.RenderingHints;
 import java.awt.font.TextLayout;
 import javax.swing.JPanel;
 
-/**
- *
- * @author Jacichen
- */
 public class DrawPanel extends JPanel {
     protected Graphics2D g2d;
     
@@ -45,7 +36,7 @@ public class DrawPanel extends JPanel {
         drawBorder();
     }
     
-    protected void preDraw(){
+    private void preDraw(){
         g2d.setPaintMode();
         g2d.setRenderingHint(
                 RenderingHints.KEY_ANTIALIASING,

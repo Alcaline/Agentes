@@ -76,7 +76,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="continueButtonActionPerformed"/>
       </Events>
     </Component>
-    <Container class="sistemasinteligentes.RenderPanel" name="renderPanel">
+    <Container class="sistemasinteligentes.view.graphics.RenderPanel" name="renderPanel">
 
       <Layout>
         <DimensionLayout dim="0">

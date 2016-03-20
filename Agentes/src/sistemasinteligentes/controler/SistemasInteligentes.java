@@ -3,10 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sistemasinteligentes;
+package sistemasinteligentes.controler;
 
+import sistemasinteligentes.model.GoToAction;
+import sistemasinteligentes.model.Ambient;
+import sistemasinteligentes.model.State;
+import sistemasinteligentes.model.Agent;
+import sistemasinteligentes.view.graphics.GUI;
 import java.util.ArrayList;
 import java.util.List;
+import sistemasinteligentes.model.AbstractAction;
 
 /**
  *
@@ -59,7 +65,7 @@ public class SistemasInteligentes {
         amb.addWeight(bufara, antonina, 8);
         amb.addWeight(morretes, bufara, 8);
         //cria o vetor solução
-        List<Action> list = new ArrayList<Action>();
+        List<AbstractAction> list = new ArrayList<>();
         list.add(new GoToAction(amb.getLink(0, 1)));
         list.add(new GoToAction(amb.getLink(1, 2)));
         list.add(new GoToAction(amb.getLink(2, 4)));

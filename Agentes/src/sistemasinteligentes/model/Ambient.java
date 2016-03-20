@@ -3,18 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sistemasinteligentes;
+package sistemasinteligentes.model;
 
+import sistemasinteligentes.view.IRenderizable;
+import sistemasinteligentes.view.graphics.RenderPanel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-/**
- *
- * @author JessicaIsoton
- */
-public class Ambient implements Renderizable{
+public class Ambient implements IRenderizable{
     private final Set<State> states;
     private final List<List<Integer>> weights;
     
@@ -22,11 +20,13 @@ public class Ambient implements Renderizable{
         states = new TreeSet<State>();
         weights = new ArrayList<List<Integer>>();
     }
-    
+
+    //Adciona o estado (estados de id ja inserido não são adicionados)
     public void addState(State state){
         states.add(state);
     }
     
+    //Impõe o custo sobre uma transição entre estado inicial st1 e estado final st2
     public void addWeight(State st1, State st2, int weight){
         if(st1 == null)
             if(!states.contains(st1))
@@ -54,6 +54,7 @@ public class Ambient implements Renderizable{
             weights.get(st1.getID()).set(st2.getID(), new Integer(weight)); //seta a coluna apartir da linha
     }
     
+    //Cria um link entre o estado de id init e fin
     public Link getLink(int init, int fin){
         State s[] = new State[states.size()];
         s = states.toArray(s);
@@ -66,12 +67,14 @@ public class Ambient implements Renderizable{
         return getLink(s[init],s[fin]);
     }
     
-    public Link getLink(State init, State fin){
+    //Cria um link entre os estados init e fin
+    private Link getLink(State init, State fin){
         if(init == null || fin == null || weights.get(init.getID()).get(fin.getID()) == null)
             return null;
         return new Link(init, fin, weights.get(init.getID()).get(fin.getID()).intValue());
     }
     
+    //Retorna o estado representado por id
     public State getState(int id){
         State s[] = new State[states.size()];
         s = states.toArray(s);
@@ -95,10 +98,12 @@ public class Ambient implements Renderizable{
             return null;
     }
     
+    //Retorna peso entre o estado init e estado fin
     public int getWeight(State init, State fin){
         return weights.get(init.getID()).get(fin.getID()).intValue();
     }
 
+    //Invoca render dos seus componentes
     @Override
     public void render(RenderPanel mp) {
         Link link;

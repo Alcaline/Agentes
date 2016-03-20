@@ -1,13 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package sistemasinteligentes;
+package sistemasinteligentes.model;
 
+import sistemasinteligentes.view.IRenderizable;
+import sistemasinteligentes.view.graphics.RenderPanel;
 import java.awt.Color;
 
-public class State implements Renderizable, Comparable<State>{
+public class State implements IRenderizable, Comparable<State>{
     final public Color STATE_COLOR     = new Color(0xb0f010);
     final public Color STATE_BORDER    = new Color(0x606060);
     final public int STATE_RADIUS      = 20;
