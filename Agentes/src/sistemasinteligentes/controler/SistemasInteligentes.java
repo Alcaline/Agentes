@@ -59,11 +59,18 @@ public class SistemasInteligentes {
         amb.addState(bufara);
         amb.addState(antonina);
         amb.addState(morretes);
+       //Ida
         amb.addWeight(portalGraciosa, saoJoao, 18);
         amb.addWeight(saoJoao, morretes, 14);
         amb.addWeight(saoJoao, bufara, 18);
         amb.addWeight(bufara, antonina, 8);
         amb.addWeight(morretes, bufara, 8);
+       //Volta
+        amb.addWeight(saoJoao,portalGraciosa , 18);
+        amb.addWeight(morretes, saoJoao, 14);
+        amb.addWeight(bufara, saoJoao, 18);
+        amb.addWeight(antonina,bufara , 8);
+        amb.addWeight(bufara, morretes, 8);
         //cria o vetor solução
         List<AbstractAction> list = new ArrayList<>();
         list.add(new GoToAction(amb.getLink(0, 1)));
@@ -73,6 +80,8 @@ public class SistemasInteligentes {
         gui.assignRenderizable(ag);
         gui.assignRenderizable(amb);
         gui.assignPrintable(ag);
-      
+        
+        
+     
     }    
 }

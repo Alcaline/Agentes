@@ -69,7 +69,13 @@ public class Ambient implements IRenderizable{
     
     //Cria um link entre os estados init e fin
     private Link getLink(State init, State fin){
-        if(init == null || fin == null || weights.get(init.getID()).get(fin.getID()) == null)
+        if(init == null || fin == null)
+            return null;
+        if(!(weights.size() > init.getID()))
+            return null;
+        if(!(weights.get(init.getID()).size() > fin.getID()))
+            return null;
+        if(weights.get(init.getID()).get(fin.getID()) == null)
             return null;
         return new Link(init, fin, weights.get(init.getID()).get(fin.getID()).intValue());
     }
@@ -118,5 +124,8 @@ public class Ambient implements IRenderizable{
             s.render(mp);
     }
     
+    public int getStateSize(){
+        return states.size();
+    }
     
 }

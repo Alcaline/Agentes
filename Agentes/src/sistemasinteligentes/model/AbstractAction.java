@@ -6,7 +6,7 @@ public abstract class AbstractAction {
     protected Link link;
     
     public AbstractAction(State initSt, State finSt, int weight){
-        link = new Link(finSt, finSt, weight);
+        link = new Link(initSt, finSt, weight);
     }
     
     public AbstractAction(Link link){

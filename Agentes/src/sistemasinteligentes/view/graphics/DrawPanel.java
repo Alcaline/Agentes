@@ -13,8 +13,7 @@ public class DrawPanel extends JPanel {
     protected Graphics2D g2d;
     
     final public Color BG_COLOR         = new Color(0xefffff);
-    final public Color BORDER_COLOR     = new Color(0x808080);
-        
+    final public Color BORDER_COLOR     = new Color(0x808080);    
     final public Font TEXT_FONT         = Font.decode("Arial-BOLD-18");
     final public Color TEXT_COLOR       = new Color(0x404040);    
     
@@ -67,6 +66,24 @@ public class DrawPanel extends JPanel {
         g2d.drawOval(x-radius, y-radius, 2*radius, 2*radius);
         g2d.setColor(prev);
     }
+    
+     public void drawCircleIniState(int x, int y, int radius, Color fill, Color stroke) {
+        Color prev = g2d.getColor();
+        g2d.setColor(fill);
+        g2d.fillOval(x-radius, y-radius, 2*radius, 2*radius);
+        g2d.setColor(stroke);
+        g2d.drawOval(x-radius, y-radius, 2*radius, 2*radius);
+        g2d.setColor(prev);
+    }
+     
+    public void drawCircleFinalState(int x, int y, int radius, Color fill, Color stroke) {
+        Color prev = g2d.getColor();
+        g2d.setColor(fill);
+        g2d.fillOval(x-radius, y-radius, 2*radius, 2*radius);
+        g2d.setColor(stroke);
+        g2d.drawOval(x-radius, y-radius, 2*radius, 2*radius);
+        g2d.setColor(prev);
+    } 
     
     public void drawLine(int x1, int y1, int x2, int y2, Color stroke) {
         Color prev = g2d.getColor();

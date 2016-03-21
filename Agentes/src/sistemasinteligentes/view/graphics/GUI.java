@@ -1,8 +1,10 @@
 package sistemasinteligentes.view.graphics;
 
+import javax.swing.JOptionPane;
 import sistemasinteligentes.model.Agent;
 import sistemasinteligentes.view.IPrintable;
 import sistemasinteligentes.view.IRenderizable;
+
 
 public class GUI extends javax.swing.JFrame {
     private Agent agent;
@@ -11,6 +13,7 @@ public class GUI extends javax.swing.JFrame {
     public GUI() {
         initComponents();
         printer = new JTextAreaPrinter(terminalBox);
+        
     }
 
     /**
@@ -26,6 +29,7 @@ public class GUI extends javax.swing.JFrame {
         terminalBox = new javax.swing.JTextArea();
         continueButton = new javax.swing.JButton();
         renderPanel = new sistemasinteligentes.view.graphics.RenderPanel();
+        resetarButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -49,8 +53,16 @@ public class GUI extends javax.swing.JFrame {
         );
         renderPanelLayout.setVerticalGroup(
             renderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 147, Short.MAX_VALUE)
+            .addGap(0, 139, Short.MAX_VALUE)
         );
+
+        resetarButton.setText("Resetar");
+        resetarButton.setName("resetarButton"); // NOI18N
+        resetarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetarButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -63,6 +75,8 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(terminalScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(resetarButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(continueButton)))
                 .addContainerGap())
         );
@@ -72,8 +86,10 @@ public class GUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(renderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(continueButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(continueButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(resetarButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(14, 14, 14)
                 .addComponent(terminalScroll, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -81,10 +97,21 @@ public class GUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public void setAgent(Agent agent){
+        
+    }
+   
     private void continueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_continueButtonActionPerformed
-        renderPanel.repaint();
-        printer.update();
+      
+       renderPanel.repaint();
+            printer.update();
+            
     }//GEN-LAST:event_continueButtonActionPerformed
+
+    private void resetarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetarButtonActionPerformed
+
+     
+    }//GEN-LAST:event_resetarButtonActionPerformed
   
     //Para renderizar um objeto, utilize esta função para adiciona-lo à lista de exibição
     public void assignRenderizable(IRenderizable rend){
@@ -109,13 +136,11 @@ public class GUI extends javax.swing.JFrame {
     //Esta deve ser uma variável provisória - o agente deveria ser capaz 
     //de notificar uma mudança para esta classe de uma forma que um não 
     //fosse tão dependente do outro (criando um Observer por exemplo)
-    public void setAgent(Agent agent){
-        this. agent = agent; 
-    }
-   
+ 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton continueButton;
     private sistemasinteligentes.view.graphics.RenderPanel renderPanel;
+    private javax.swing.JButton resetarButton;
     private javax.swing.JTextArea terminalBox;
     private javax.swing.JScrollPane terminalScroll;
     // End of variables declaration//GEN-END:variables
