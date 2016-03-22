@@ -27,7 +27,7 @@ public class Ambient implements IRenderizable{
     }
     
     //Impõe o custo sobre uma transição entre estado inicial st1 e estado final st2
-    public void addWeight(State st1, State st2, int weight){
+    public void addConection(State st1, State st2, int weight){
         if(st1 == null)
             if(!states.contains(st1))
                 return;
@@ -53,7 +53,11 @@ public class Ambient implements IRenderizable{
         
             weights.get(st1.getID()).set(st2.getID(), new Integer(weight)); //seta a coluna apartir da linha
     }
-    
+            
+    public void addConection(Link link){
+        addConection(link.getFirst(),link.getSecond(),link.getWeight());
+    }
+  
     //Cria um link entre o estado de id init e fin
     public Link getLink(int init, int fin){
         State s[] = new State[states.size()];
@@ -77,7 +81,14 @@ public class Ambient implements IRenderizable{
             return null;
         if(weights.get(init.getID()).get(fin.getID()) == null)
             return null;
-        return new Link(init, fin, weights.get(init.getID()).get(fin.getID()).intValue());
+        Link link = new Link(init, fin, weights.get(init.getID()).get(fin.getID()).intValue());
+        if(!(weights.size() > fin.getID()))
+            return link;
+        if(!(weights.get(fin.getID()).size() > init.getID()))
+            return link;
+        if(weights.get(fin.getID()).get(init.getID()) == null)
+            return link;
+        return new BidirectionalLink(link);
     }
     
     //Retorna o estado representado por id
@@ -109,23 +120,57 @@ public class Ambient implements IRenderizable{
         return weights.get(init.getID()).get(fin.getID()).intValue();
     }
 
+    public int getStateSize(){
+        return states.size();
+    }
+
+    List<State> getFrontier(State current) {
+        Link link;
+        List<State> frontier = new ArrayList<>();
+        for(int i = 0; i < getStateSize(); i++)
+            if((link = getLink(current.getID(), i)) != null)
+            {
+                frontier.add(link.getSecond());
+            }
+        return frontier;
+    }
+
+    public void addBidirectionalConection(State st1, State st2, int weight){
+        addConection(st1, st2, weight);
+        addConection(st2, st1, weight);
+    }
+    
+    public void addBidirectionalConection(Link link){
+        addBidirectionalConection(link.getFirst(),link.getSecond(),link.getWeight());
+    }
+    
     //Invoca render dos seus componentes
     @Override
     public void render(RenderPanel mp) {
-        Link link;
-        for(int i = 0; i < weights.size(); i++)
-            if(weights.get(i) != null)
-                for(int j = 0; j < weights.get(i).size(); j++)
-                    if(weights.get(i).get(j) != null)
-                        if((link = getLink(i,j)) != null)
-                            link.render(mp);        
+        Link link1 = null;
+        Link link2 = null;
+        for(int i = 0; i < states.size(); i++)
+            for(int j = i; j < states.size(); j++)
+            {
+                if(weights.get(i) != null)
+                    if(weights.get(i).size() > j)
+                        if(weights.get(i).get(j) != null)
+                            link1 = getLink(i,j);
+                if(link1 != null)
+                {
+                    link1.render(mp);
+                    if(link1 instanceof BidirectionalLink)
+                        continue;
+                }
+                if(weights.get(j) != null)
+                    if(weights.get(j).size() > i)
+                        if(weights.get(j).get(i) != null)
+                            link2 = getLink(i,j);
+                if(link2 != null)
+                    link2.render(mp);
+            }
         
         for(State s: states)
             s.render(mp);
     }
-    
-    public int getStateSize(){
-        return states.size();
-    }
-    
 }

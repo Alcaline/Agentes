@@ -21,7 +21,8 @@ public class JTextAreaPrinter extends AbstractTextPrinter{
     public void update() {
         clear();
         for(IPrintable p: printList)
-            printer.append(p.printText());
+            printer.append(p.getMessage());
+        printer.setCaretPosition(0);
     }
 
     public void clear() {

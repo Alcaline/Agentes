@@ -12,9 +12,9 @@ import java.awt.Color;
 public class Link implements IRenderizable{
     final public Color LINK_COLOR      = new Color(0xf08040);
 
-    private final State first;
-    private final State second;
-    private final int weight;
+    protected final State first;
+    protected final State second;
+    protected final int weight;
     
     public Link(State first, State second, int weight){
         this.first = first;

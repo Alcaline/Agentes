@@ -13,6 +13,7 @@ import sistemasinteligentes.view.graphics.GUI;
 import java.util.ArrayList;
 import java.util.List;
 import sistemasinteligentes.model.AbstractAction;
+import sistemasinteligentes.model.Link;
 
 /**
  *
@@ -43,15 +44,15 @@ public class SistemasInteligentes {
             java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+                
         GUI gui = new GUI();
         gui.setVisible(true);
 
-        State portalGraciosa = new State(30,80,"PG",0);
-        State saoJoao = new State(130,80,"SJ",1);
-        State bufara = new State(230,30,"B",2);
-        State morretes = new State(230,120,"M",3);
-        State antonina = new State(330,80,"A",4);
+        State portalGraciosa = new State(50,150,"PG",0);
+        State saoJoao = new State(200,150,"SJ",1);
+        State bufara = new State(350,50,"B",2);
+        State morretes = new State(350,250,"M",3);
+        State antonina = new State(500,150,"A",4);
         
         Ambient amb = new Ambient();
         amb.addState(portalGraciosa);
@@ -59,29 +60,35 @@ public class SistemasInteligentes {
         amb.addState(bufara);
         amb.addState(antonina);
         amb.addState(morretes);
-       //Ida
-        amb.addWeight(portalGraciosa, saoJoao, 18);
-        amb.addWeight(saoJoao, morretes, 14);
-        amb.addWeight(saoJoao, bufara, 18);
-        amb.addWeight(bufara, antonina, 8);
-        amb.addWeight(morretes, bufara, 8);
-       //Volta
-        amb.addWeight(saoJoao,portalGraciosa , 18);
-        amb.addWeight(morretes, saoJoao, 14);
-        amb.addWeight(bufara, saoJoao, 18);
-        amb.addWeight(antonina,bufara , 8);
-        amb.addWeight(bufara, morretes, 8);
+        
+        Link l0 = new Link(portalGraciosa, saoJoao, 18);
+        Link l1 = new Link(saoJoao, morretes, 14);
+        Link l2 = new Link(saoJoao, bufara, 18);
+        Link l3 = new Link(bufara, antonina, 8);
+        Link l4 = new Link(morretes, bufara, 8);
+        
+        amb.addBidirectionalConection(l0);
+        amb.addBidirectionalConection(l1);
+        amb.addBidirectionalConection(l2);
+        amb.addBidirectionalConection(l3);
+        amb.addBidirectionalConection(l4);
         //cria o vetor solução
-        List<AbstractAction> list = new ArrayList<>();
-        list.add(new GoToAction(amb.getLink(0, 1)));
-        list.add(new GoToAction(amb.getLink(1, 2)));
-        list.add(new GoToAction(amb.getLink(2, 4)));
-        Agent ag = new Agent(portalGraciosa,antonina,amb,list);
+        List<AbstractAction> solution = new ArrayList<>();
+        solution.add(new GoToAction(l0));
+        solution.add(new GoToAction(l2));
+        solution.add(new GoToAction(l3));
+        
+        List<AbstractAction> actions = new ArrayList<>();
+        actions.add(new GoToAction(l0));
+        actions.add(new GoToAction(l1));
+        actions.add(new GoToAction(l2));
+        actions.add(new GoToAction(l3));
+        actions.add(new GoToAction(l4));
+        
+        Agent ag = new Agent(portalGraciosa,antonina,amb,actions,solution);
+        gui.setAgent(ag);
         gui.assignRenderizable(ag);
-        gui.assignRenderizable(amb);
         gui.assignPrintable(ag);
-        
-        
-     
+        gui.assignRenderizable(amb);
     }    
 }

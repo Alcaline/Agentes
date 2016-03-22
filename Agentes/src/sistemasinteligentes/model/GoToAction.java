@@ -15,4 +15,9 @@ public class GoToAction extends AbstractAction{
         return getFinal();
     }
     
+        
+    @Override
+    public String toString(){
+        return "IrPara("+link.getFirst().getName()+"; "+link.getSecond().getName()+")";
+    }
 }

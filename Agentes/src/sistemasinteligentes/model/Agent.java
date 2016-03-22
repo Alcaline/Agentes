@@ -7,136 +7,165 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class Agent implements IRenderizable, IPrintable {
 
-    final public Color AGENT_COLOR = new Color(0x6070f0);
-    final public Color INITIAL_STATE_COLOR = new Color(0xff0000);
-    final public Color INITIAL_STATE_BORDER = new Color(0xff0000);
-    final public Color FINAL_STATE_COLOR = new Color(0x00ff00);
-    final public Color FINAL_STATE_BORDER = new Color(0x00ff00);
-    final public Color AGENT_BORDER = new Color(0xa0c0e0);
-    final public int AGENT_RADIUS = 25;
-    final public int AGENT_RADIUS_INITIAL_AND_FINAL_STATE = 30;
-
-    private State current;
+    static final public Color AGENT_COLOR      = new Color(0x0000ee);
+    static final public Color OBJECTIVE_COLOR  = new Color(0xee0000);
+    static final public Color START_COLOR      = new Color(0x00ee00);
+    static final public Color FRONTIER_COLOR   = new Color(0x00eeee);
+    static final public Color DESTINY_COLOR    = new Color(0xee00ee);
+    static final public Color SOLUTION_COLOR   = new Color(0xeeee00);
+    
+    static final public int SOLUTION_RADIUS    = 30;
+    static final public int START_RADIUS       = 28;
+    static final public int FRONTIER_RADIUS    = 26;
+    static final public int DESTINY_RADIUS     = 24;
+    static final public int AGENT_RADIUS       = 22;
+    
+    final public int PERCEPTING         = 0;
+    final public int DECIDING           = 1;
+    final public int ACTING             = 2;   
+    final public int FINISH             = 3;
+    
     private final State iniState;
     private final State objective;
-    private Ambient ambient;
-    private List<AbstractAction> solution;
-    private String text;
-    private List<State> fronteira;
-    private LinkedList<AbstractAction> solutionSteps = new LinkedList<>();
-    private State nextStep;
-    private int nStBefore = 1;
-    String textAux = new String();
-    //Variavel de teste
-    boolean state = false;
+    private final Ambient ambient;
+    private final List<AbstractAction> actions;
+    private final List<AbstractAction> solution;
+    private final Queue<AbstractAction> solutionSteps = new LinkedList<>();
+    
+    private State current;
+    private List<State> frontier;
+    private AbstractAction nextStep;
 
-    public Agent(State current, State objective, Ambient ambient, List<AbstractAction> solution) {
-        this.fronteira = new ArrayList();
+    private int currentCycle = PERCEPTING;
+    private String message = new String();
+    private int totalCust = 0;
+
+    public Agent(State current, State objective, Ambient ambient, List<AbstractAction> actions, List<AbstractAction> solution) {
+        this.frontier = new ArrayList();
         this.current = current;
         this.iniState = current;
         this.objective = objective;
         this.ambient = ambient;
         this.solution = solution;
-
+        this.actions = actions;
+            
         for (AbstractAction a : solution) {
             solutionSteps.add(a);
         }
     }
-
+    
+    public void nextCycle(){       
+        switch(currentCycle){
+           case PERCEPTING:
+                percept();
+                break;
+           case DECIDING:
+                choose();
+                break;
+           case ACTING:
+                execute();
+                break;
+           case FINISH:
+                message = "Objetivo Alcançado.\n";
+                break;
+       }
+    }
+    
     public void resetAgent(){
-        this.current= iniState;
-    }
-    public String percept() {
-        text = "Percebendo estado(s).\n";
-        text = "Fronteira de " + current.getName() + ": \n";
-        for (int n = 0; n < ambient.getStateSize(); n++) {
-            if (ambient.getLink(current.getID(), ambient.getState(n).getID()) != null) {
-                text += ambient.getState(n).getName() + "\n";
-                fronteira.add(ambient.getState(n));
-            }
-
+        current = iniState;
+        currentCycle = PERCEPTING;
+        nextStep = null;
+        frontier.clear();
+        solutionSteps.clear();
+        for (AbstractAction a : solution) {
+            solutionSteps.add(a);
         }
-
-        return text;
-
+        message = null;
     }
-
-    public String choose() {
-        text = "Escolhendo ação:\n";
-        for (int i = 0; i < 3; i++) {
-
-            if (solutionSteps.get(i).getInitial().getName().equals(current.getName()) == true) {
-
-                nextStep = new State(solutionSteps.get(i).getFinal().getX(), solutionSteps.get(i).getFinal().getY(),
-                        solutionSteps.get(i).getFinal().getName(), solutionSteps.get(i).getFinal().getID());
-                text += "Ir de " + current.getName() + " para " + solutionSteps.get(i).getFinal().getName();
-
-            }
-
+    
+    private void percept() {
+        message = "Percebendo estado(s):\n";
+        if(current.equals(objective))
+        {
+            message += "  Objetivo Atingido.\n";
+            currentCycle = FINISH;
+            return;
         }
-
-        return text;
-
+        
+        message = "Fronteira de " + current.getName() + ": \n";
+        frontier = ambient.getFrontier(current);
+        for(State f: frontier)
+            message += "    >"+f.getName()+"\n";
+        currentCycle = DECIDING;
     }
 
-    public String execute() {
-        text = "Executando ação:\n";
-        text += "Indo de " + current.getName() + " para " + nextStep.getName();
-        current = nextStep;
+    public void choose() {
+        message = "Escolhendo ação:\n";
+        message+= "  Possíveis ações:\n";
+        
+        List<AbstractAction> possibleActions = new ArrayList<>();
+        for(int i = 0; i < actions.size(); i++)
+            if(actions.get(i).getInitial() == current)
+            {
+                possibleActions.add(actions.get(i));
+                message += "    >"+actions.get(i)+"\n";
+                message += "      >>Custo = "+actions.get(i).getWeight()+"\n";
+            }
+        
+        nextStep = solutionSteps.poll();
+        
+        if(!possibleActions.contains(nextStep))
+            nextStep = null;
+        
+        if(nextStep == null)
+            message+= "\n  Não foi possível escolher uma ação!\n";
+        else
+            message+= "\n  Ação escolhida:\n    >"+nextStep+
+                                              "\n      >>Custo = "+nextStep.getWeight()+"\n";
+        
+        currentCycle = ACTING;
+    }
 
-        return text;
+    public void execute() {
+        message = "Executando ação:\n";
+        message += "  Executando ação: "+nextStep+"\n";
+        current = nextStep.doExecute();
+        totalCust += nextStep.getWeight();
+        message += "  Estado "+current.getName()+" atingido com sucesso!\n";
+        message += "  Custo total até estado atual: "+totalCust+"\n";
+        nextStep = null;
+        frontier.clear();
+        currentCycle = PERCEPTING;
     }
 
 //Utilize este metodo para desenhar em no painel desejado
     @Override
     public void render(RenderPanel mp) {
-        mp.drawCircleIniState(iniState.getX(), iniState.getY(), AGENT_RADIUS_INITIAL_AND_FINAL_STATE, INITIAL_STATE_COLOR, INITIAL_STATE_BORDER);
-        mp.drawCircleFinalState(objective.getX(), objective.getY(), AGENT_RADIUS_INITIAL_AND_FINAL_STATE, FINAL_STATE_COLOR, FINAL_STATE_BORDER);
-        mp.drawCircle(current.getX(), current.getY(), AGENT_RADIUS, AGENT_COLOR, AGENT_BORDER);
+        for(AbstractAction a: solution)
+        {
+            State s1 = a.getInitial();
+            State s2 = a.getFinal();
+            mp.drawCircle(s1.getX(), s1.getY(), SOLUTION_RADIUS, SOLUTION_COLOR, SOLUTION_COLOR);
+            mp.drawCircle(s2.getX(), s2.getY(), SOLUTION_RADIUS, SOLUTION_COLOR, SOLUTION_COLOR);
+        }
+        mp.drawCircle(iniState.getX(), iniState.getY(), START_RADIUS, START_COLOR, START_COLOR);
+        mp.drawCircle(objective.getX(), objective.getY(), START_RADIUS, OBJECTIVE_COLOR, OBJECTIVE_COLOR);
+        for(State s: frontier)
+            mp.drawCircle(s.getX(), s.getY(), FRONTIER_RADIUS, FRONTIER_COLOR, FRONTIER_COLOR);
+        if(nextStep != null)
+            mp.drawCircle(nextStep.getFinal().getX(), nextStep.getFinal().getY(), DESTINY_RADIUS, DESTINY_COLOR, DESTINY_COLOR);
+        mp.drawCircle(current.getX(), current.getY(), AGENT_RADIUS, AGENT_COLOR, AGENT_COLOR);
     }
 
     //Utilize este método para exibir na caixa de texto uma mensagem. 
     //Aconselho utilizar variaveis de estados como "percebendo", "decidindo" 
     //e "agindo" para exibir a cada etapa uma mensagem diferente
     @Override
-    public String printText() {
-        System.out.println(nStBefore);
-        if (nStBefore >= 4) {
-            nStBefore = 1;
-        }
-
-        switch (nStBefore) {
-            case 0: {
-                return text = "Objetivo alcançado!\n";
-
-            }
-            case 1: {
-                if (current.getName() == objective.getName()) {
-                    nStBefore = 0;
-                    break;
-                }
-                percept();
-                nStBefore++;
-                break;
-            }
-            case 2: {
-                choose();
-                nStBefore++;
-                break;
-            }
-            case 3: {
-                execute();
-                nStBefore++;
-
-                break;
-            }
-
-        }
-
-        return text;
-    }
-
+    public String getMessage() {
+        return message;
+    } 
 }

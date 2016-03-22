@@ -5,7 +5,7 @@ import sistemasinteligentes.view.graphics.RenderPanel;
 import java.awt.Color;
 
 public class State implements IRenderizable, Comparable<State>{
-    final public Color STATE_COLOR     = new Color(0xb0f010);
+    final public Color STATE_COLOR     = new Color(0xf0f0f0);
     final public Color STATE_BORDER    = new Color(0x606060);
     final public int STATE_RADIUS      = 20;
     
