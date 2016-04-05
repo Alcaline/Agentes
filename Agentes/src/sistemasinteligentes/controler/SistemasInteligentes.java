@@ -48,6 +48,8 @@ public class SistemasInteligentes {
         GUI gui = new GUI();
         gui.setVisible(true);
 
+        
+        
         State portalGraciosa = new State(50,150,"PG",0);
         State saoJoao = new State(200,150,"SJ",1);
         State bufara = new State(350,50,"B",2);

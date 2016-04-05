@@ -32,6 +32,7 @@ public class Agent implements IRenderizable, IPrintable {
     private final State iniState;
     private final State objective;
     private final Ambient ambient;
+    private final Ambient representation;
     private final List<AbstractAction> actions;
     private final List<AbstractAction> solution;
     private final Queue<AbstractAction> solutionSteps = new LinkedList<>();
@@ -50,6 +51,7 @@ public class Agent implements IRenderizable, IPrintable {
         this.iniState = current;
         this.objective = objective;
         this.ambient = ambient;
+        this.representation = ambient;
         this.solution = solution;
         this.actions = actions;
             
@@ -97,7 +99,7 @@ public class Agent implements IRenderizable, IPrintable {
         }
         
         message = "Fronteira de " + current.getName() + ": \n";
-        frontier = ambient.getFrontier(current);
+        frontier = representation.getFrontier(current);
         for(State f: frontier)
             message += "    >"+f.getName()+"\n";
         currentCycle = DECIDING;
