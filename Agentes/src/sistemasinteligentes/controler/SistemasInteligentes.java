@@ -123,8 +123,8 @@ public class SistemasInteligentes {
         TableHeuristic tableHeuristic2 = new TableHeuristic(amb,h,"h2");
         //ReverseWeightHeuristic revWeightHeuristic = new ReverseWeightHeuristic(amb,h);
         
-        tableHeuristic.set(new int[]{40,21,24,13,8,6,12,0});
-        tableHeuristic2.set(new int[]{30,20,10,20,10,10,10,0});
+        tableHeuristic.set(new int[]{15,10,5,10,5,5,5,0});
+        tableHeuristic2.set(new int[]{43,23,24,13,8,6,12,0});
         
         solvers.add(new AStarSolver(tableHeuristic));
         solvers.add(new AStarSolver(tableHeuristic2));

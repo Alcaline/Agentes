@@ -232,7 +232,7 @@ public class AStarSolver extends AbstractSolver {
         }
         
         public int getGCust(){
-            return fCust;
+            return gCust;
         }
         
         public void setGCust(int hCust){
