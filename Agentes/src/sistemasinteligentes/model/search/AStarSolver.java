@@ -6,6 +6,7 @@
 package sistemasinteligentes.model.search;
 
 import java.awt.Color;
+import static java.awt.Frame.MAXIMIZED_BOTH;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -161,7 +162,7 @@ public class AStarSolver extends AbstractSolver {
         HeuristicSolverPane pane = new HeuristicSolverPane();
         dialog.add(pane);
         dialog.setModal(true);
-        dialog.setSize(800, 600);
+        dialog.setSize(1200, 800);
         dialog.setTitle("Simulaçao da Solução");
         dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         pane.setAmbient(representationOriginal);
@@ -180,9 +181,21 @@ public class AStarSolver extends AbstractSolver {
 
     @Override
     public void render(RenderPanel mp) {
+        Node root = currentNode;
+        while(root.parent != null)
+            root = root.parent;
+        drawVisited(root, mp);
+        mp.drawCircle(initialState.getX(), initialState.getY(), Agent.START_RADIUS, Agent.START_COLOR, Agent.START_COLOR);        
+        mp.drawCircle(objective.getX(), objective.getY(), Agent.START_RADIUS, Agent.OBJECTIVE_COLOR, Agent.OBJECTIVE_COLOR);        
         for(Node s: frontier)
             mp.drawCircle(s.getState().getX(), s.getState().getY(), FRONTIER_RADIUS, FRONTIER_COLOR, FRONTIER_COLOR);
-        mp.drawCircle(currentNode.getState().getX(), currentNode.getState().getY(), Agent.AGENT_RADIUS, Color.pink, Color.pink);
+        mp.drawCircle(currentNode.getState().getX(), currentNode.getState().getY(), Agent.DESTINY_RADIUS, Agent.DESTINY_COLOR, Agent.DESTINY_COLOR);
+    }
+    
+    private void drawVisited(Node node, RenderPanel mp){
+        mp.drawCircle(node.getState().getX(), node.getState().getY(), Agent.SOLUTION_RADIUS, Agent.SOLUTION_COLOR, Agent.SOLUTION_COLOR);        
+        for(int i = 0; i < node.getBranchesSize(); i++)
+            drawVisited(node.getBranch(i), mp);
     }
 
     private void constructSolution() {

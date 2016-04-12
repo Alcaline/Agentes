@@ -15,8 +15,8 @@ import sistemasinteligentes.view.graphics.RenderPanel;
  */
 public class TableHeuristic extends HeuristicFunction {
 
-    public TableHeuristic(Ambient ambient, State objective) {
-        super(ambient, objective);
+    public TableHeuristic(Ambient ambient, State objective, String name) {
+        super(ambient, objective, name);
     }
     
     public void set(State st, int weight){
@@ -34,6 +34,6 @@ public class TableHeuristic extends HeuristicFunction {
     
     @Override
     public String toString(){
-        return "Heurística Tabelada";
+        return "Heurística Tabelada: "+name;
     }
 }

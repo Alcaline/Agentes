@@ -8,6 +8,7 @@ package sistemasinteligentes.model.search;
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
+import sistemasinteligentes.model.Agent;
 import sistemasinteligentes.model.Ambient;
 import sistemasinteligentes.model.State;
 import sistemasinteligentes.view.IPrintable;
@@ -23,13 +24,15 @@ public abstract class HeuristicFunction implements IRenderizable{
     protected final State objective;
     protected final int[] heuristicTable;
     
+    protected final String name;
+    
     public int get(State st){
         return heuristicTable[st.getID()];
     }
     
-    private HeuristicFunction(){ambient = null; objective = null; heuristicTable = null;}
+    private HeuristicFunction(){ambient = null; objective = null; heuristicTable = null; name = null;}
     
-    public HeuristicFunction(Ambient ambient, State objective){
+    public HeuristicFunction(Ambient ambient, State objective, String name){
         if(ambient == null)
             throw new NullPointerException();
         this.ambient = ambient;
@@ -39,13 +42,15 @@ public abstract class HeuristicFunction implements IRenderizable{
         
         for(int i = 0; i < heuristicTable.length; i++)
             heuristicTable[i] = -1;
+        
+        this.name = name;
     }
     
     @Override
     public void render(RenderPanel mp) {
         for(int i = 0; i < ambient.getStateSize(); i++)
             if(get(ambient.getState(i)) >= 0)
-                mp.drawText(ambient.getState(i).getX() + State.STATE_RADIUS, ambient.getState(i).getY() - State.STATE_RADIUS, String.format("%02d", heuristicTable[i]), Color.yellow, mp.TEXT_FONT, mp.VALIGN_BOTTOM, mp.HALIGN_LEFT);
+                mp.drawText(ambient.getState(i).getX() + State.STATE_RADIUS, ambient.getState(i).getY() - State.STATE_RADIUS, String.format("%02d", heuristicTable[i]), Agent.AGENT_COLOR, mp.TEXT_FONT, mp.VALIGN_BOTTOM, mp.HALIGN_LEFT);
     
     }
 }

@@ -5,6 +5,7 @@
  */
 package sistemasinteligentes.controler;
 
+import static java.awt.Frame.MAXIMIZED_BOTH;
 import sistemasinteligentes.model.GoToAction;
 import sistemasinteligentes.model.Ambient;
 import sistemasinteligentes.model.State;
@@ -118,12 +119,12 @@ public class SistemasInteligentes {
         
         List<AbstractSolver> solvers = new ArrayList<AbstractSolver>();
         
-        TableHeuristic tableHeuristic = new TableHeuristic(amb,h);
-        TableHeuristic tableHeuristic2 = new TableHeuristic(amb,h);
+        TableHeuristic tableHeuristic = new TableHeuristic(amb,h,"h1");
+        TableHeuristic tableHeuristic2 = new TableHeuristic(amb,h,"h2");
         //ReverseWeightHeuristic revWeightHeuristic = new ReverseWeightHeuristic(amb,h);
         
         tableHeuristic.set(new int[]{40,21,24,13,8,6,12,0});
-        tableHeuristic2.set(new int[]{45,45,1,13,8,6,1,0});
+        tableHeuristic2.set(new int[]{30,20,10,20,10,10,10,0});
         
         solvers.add(new AStarSolver(tableHeuristic));
         solvers.add(new AStarSolver(tableHeuristic2));
@@ -132,6 +133,7 @@ public class SistemasInteligentes {
                 
         State init = (State) JOptionPane.showInputDialog(gui, "Escolha o estado inicial", "Estado Inicial", JOptionPane.QUESTION_MESSAGE, null, choose.toArray(), 0);
 
+        gui.setExtendedState(MAXIMIZED_BOTH);
         gui.setVisible(true);
         
         if(init == null)

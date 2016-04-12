@@ -19,14 +19,14 @@ import sistemasinteligentes.view.graphics.RenderPanel;
  */
 public class ReverseWeightHeuristic extends HeuristicFunction{
 
-    public ReverseWeightHeuristic(Ambient ambient, State objective) {
-        super(ambient, objective);
+    public ReverseWeightHeuristic(Ambient ambient, State objective, String name) {
+        super(ambient, objective, name);
         fillTable();
     }
     
     @Override
     public String toString(){
-        return "Heurística de Custo Reverso";
+        return "Heurística de Custo Reverso: "+ name;
     }
 
     private void fillTable() {
