@@ -11,8 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class Ambient implements IRenderizable{
+public class Ambient implements IRenderizable, Cloneable{
     private final Set<State> states;
     private final List<List<Integer>> weights;
     
@@ -93,6 +95,9 @@ public class Ambient implements IRenderizable{
     
     //Retorna o estado representado por id
     public State getState(int id){
+        if(id >= getStateSize())
+            return null;
+        
         State s[] = new State[states.size()];
         s = states.toArray(s);
         int topRange = id;
@@ -172,5 +177,27 @@ public class Ambient implements IRenderizable{
         
         for(State s: states)
             s.render(mp);
+    }
+
+    Ambient getRepresentation(){
+        Ambient clone = new Ambient();
+       
+        for(State s: states)
+            clone.addState(s);
+        
+        Link l1;
+        Link l2;
+        for(int i = 0; i < getStateSize(); i++){
+            for(int j = i; j < getStateSize(); j++){
+                if((l1 = getLink(i,j)) != null){
+                    if((l2 = getLink(j,i)) != null)
+                        clone.addBidirectionalConection(l1);
+                    else
+                        clone.addConection(l1);
+                }
+            }
+        }
+        
+        return clone;        
     }
 }

@@ -5,9 +5,9 @@ import sistemasinteligentes.view.graphics.RenderPanel;
 import java.awt.Color;
 
 public class State implements IRenderizable, Comparable<State>{
-    final public Color STATE_COLOR     = new Color(0xf0f0f0);
-    final public Color STATE_BORDER    = new Color(0x606060);
-    final public int STATE_RADIUS      = 20;
+    static final public Color STATE_COLOR     = new Color(0xf0f0f0);
+    static final public Color STATE_BORDER    = new Color(0x606060);
+    static final public int STATE_RADIUS      = 20;
     
     private int x;
     private int y;
@@ -67,6 +67,11 @@ public class State implements IRenderizable, Comparable<State>{
 
     @Override
     public int compareTo(State o) {
-        return id > o.id? 1 : (id < o.id? -1 : 0); 
+        return id - o.id; 
+    }
+    
+    @Override
+    public String toString(){
+        return getName()+ "["+ getID() +"]";
     }
 }

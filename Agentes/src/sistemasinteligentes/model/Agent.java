@@ -1,5 +1,6 @@
 package sistemasinteligentes.model;
 
+import sistemasinteligentes.model.search.AbstractSolver;
 import sistemasinteligentes.view.IPrintable;
 import sistemasinteligentes.view.graphics.RenderPanel;
 import sistemasinteligentes.view.IRenderizable;
@@ -32,32 +33,29 @@ public class Agent implements IRenderizable, IPrintable {
     private final State iniState;
     private final State objective;
     private final Ambient ambient;
-    private final Ambient representation;
     private final List<AbstractAction> actions;
-    private final List<AbstractAction> solution;
     private final Queue<AbstractAction> solutionSteps = new LinkedList<>();
     
     private State current;
     private List<State> frontier;
+    private List<AbstractAction> solution;
+    private AbstractSolver solver;
     private AbstractAction nextStep;
+    private Ambient representation;
 
     private int currentCycle = PERCEPTING;
     private String message = new String();
     private int totalCust = 0;
 
-    public Agent(State current, State objective, Ambient ambient, List<AbstractAction> actions, List<AbstractAction> solution) {
+    public Agent(State current, State objective, Ambient ambient, List<AbstractAction> actions, AbstractSolver solver) {
         this.frontier = new ArrayList();
         this.current = current;
         this.iniState = current;
         this.objective = objective;
         this.ambient = ambient;
-        this.representation = ambient;
-        this.solution = solution;
         this.actions = actions;
-            
-        for (AbstractAction a : solution) {
-            solutionSteps.add(a);
-        }
+        this.representation = ambient.getRepresentation();
+        this.solver = solver;
     }
     
     public void nextCycle(){       
@@ -83,9 +81,7 @@ public class Agent implements IRenderizable, IPrintable {
         nextStep = null;
         frontier.clear();
         solutionSteps.clear();
-        for (AbstractAction a : solution) {
-            solutionSteps.add(a);
-        }
+        solution = null;
         message = null;
     }
     
@@ -98,6 +94,9 @@ public class Agent implements IRenderizable, IPrintable {
             return;
         }
         
+        //Sempre atualize a representação
+        representation = ambient.getRepresentation();
+        
         message = "Fronteira de " + current.getName() + ": \n";
         frontier = representation.getFrontier(current);
         for(State f: frontier)
@@ -106,7 +105,17 @@ public class Agent implements IRenderizable, IPrintable {
     }
 
     public void choose() {
-        message = "Escolhendo ação:\n";
+        message = "";
+        if(solution == null){
+            message += "Calculando solução...\n";
+            redefineSolution();
+            message += "Solução encontrada: ";
+            for(AbstractAction step: solution)
+                message += "[" + step + "]";
+            message += "\n\n";
+        }
+        
+        message+= "Escolhendo ação:\n";
         message+= "  Possíveis ações:\n";
         
         List<AbstractAction> possibleActions = new ArrayList<>();
@@ -117,11 +126,19 @@ public class Agent implements IRenderizable, IPrintable {
                 message += "    >"+actions.get(i)+"\n";
                 message += "      >>Custo = "+actions.get(i).getWeight()+"\n";
             }
-        
+               
         nextStep = solutionSteps.poll();
         
-        if(!possibleActions.contains(nextStep))
-            nextStep = null;
+        if(!possibleActions.contains(nextStep)){
+            message+= "Solução defasada; redefinindo...\n";
+            redefineSolution();
+            
+            message += "Nova solução encontrada: ";
+            for(AbstractAction step: solution)
+                message += "[" + step + "]";
+            message += "\n\n";
+            nextStep = solutionSteps.poll();
+        }
         
         if(nextStep == null)
             message+= "\n  Não foi possível escolher uma ação!\n";
@@ -147,12 +164,14 @@ public class Agent implements IRenderizable, IPrintable {
 //Utilize este metodo para desenhar em no painel desejado
     @Override
     public void render(RenderPanel mp) {
-        for(AbstractAction a: solution)
-        {
-            State s1 = a.getInitial();
-            State s2 = a.getFinal();
-            mp.drawCircle(s1.getX(), s1.getY(), SOLUTION_RADIUS, SOLUTION_COLOR, SOLUTION_COLOR);
-            mp.drawCircle(s2.getX(), s2.getY(), SOLUTION_RADIUS, SOLUTION_COLOR, SOLUTION_COLOR);
+        if(solution != null){
+            for(AbstractAction a: solution)
+            {
+                State s1 = a.getInitial();
+                State s2 = a.getFinal();
+                mp.drawCircle(s1.getX(), s1.getY(), SOLUTION_RADIUS, SOLUTION_COLOR, SOLUTION_COLOR);
+                mp.drawCircle(s2.getX(), s2.getY(), SOLUTION_RADIUS, SOLUTION_COLOR, SOLUTION_COLOR);
+            }
         }
         mp.drawCircle(iniState.getX(), iniState.getY(), START_RADIUS, START_COLOR, START_COLOR);
         mp.drawCircle(objective.getX(), objective.getY(), START_RADIUS, OBJECTIVE_COLOR, OBJECTIVE_COLOR);
@@ -170,4 +189,14 @@ public class Agent implements IRenderizable, IPrintable {
     public String getMessage() {
         return message;
     } 
+
+    public void setSolver(AbstractSolver solver){
+        this.solver = solver;        
+    }
+    
+    private void redefineSolution() {
+        solution = solver.solve(representation, actions, current, objective);
+        solutionSteps.clear();
+        solutionSteps.addAll(solution);
+    }
 }

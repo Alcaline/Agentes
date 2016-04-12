@@ -6,7 +6,7 @@ import sistemasinteligentes.view.IRenderizable;
 
 //Esta "desenha" os objetos "assinantes" (membros de renderObjects) 
 //chamando o método render() de cada um para que possam se autodesenhar 
-public class RenderPanel extends DrawPanel{
+public class RenderPanel extends DrawPane{
     final protected List<IRenderizable> renderObjects = new ArrayList<>();
 
     @Override

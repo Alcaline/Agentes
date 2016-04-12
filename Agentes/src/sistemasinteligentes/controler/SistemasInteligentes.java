@@ -12,8 +12,13 @@ import sistemasinteligentes.model.Agent;
 import sistemasinteligentes.view.graphics.GUI;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import sistemasinteligentes.model.AbstractAction;
 import sistemasinteligentes.model.Link;
+import sistemasinteligentes.model.search.AStarSolver;
+import sistemasinteligentes.model.search.AbstractSolver;
+import sistemasinteligentes.model.search.ReverseWeightHeuristic;
+import sistemasinteligentes.model.search.TableHeuristic;
 
 /**
  *
@@ -29,7 +34,7 @@ public class SistemasInteligentes {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -45,49 +50,93 @@ public class SistemasInteligentes {
         }
         //</editor-fold>
                 
-        GUI gui = new GUI();
-        gui.setVisible(true);
-
-        
-        
-        State portalGraciosa = new State(50,150,"PG",0);
-        State saoJoao = new State(200,150,"SJ",1);
-        State bufara = new State(350,50,"B",2);
-        State morretes = new State(350,250,"M",3);
-        State antonina = new State(500,150,"A",4);
+        State a = new State(50,250,"A",0);
+        State b = new State(200,150,"B",1);
+        State c = new State(200,350,"C",2);
+        State d = new State(350,50,"D",3);
+        State e = new State(500,50,"E",4);
+        State f = new State(350,150,"F",5);
+        State g = new State(350,450,"G",6);
+        State h = new State(650,250,"H",7);
         
         Ambient amb = new Ambient();
-        amb.addState(portalGraciosa);
-        amb.addState(saoJoao);
-        amb.addState(bufara);
-        amb.addState(antonina);
-        amb.addState(morretes);
+        amb.addState(a);
+        amb.addState(b);
+        amb.addState(c);
+        amb.addState(d);
+        amb.addState(e);
+        amb.addState(f);
+        amb.addState(g);
+        amb.addState(h);
+
+        List<State> choose = new ArrayList<>();
+        choose.add(a);
+        choose.add(b);
+        choose.add(c);
+        choose.add(d);
+        choose.add(e);
+        choose.add(f);
+        choose.add(g);
+        choose.add(h);
         
-        Link l0 = new Link(portalGraciosa, saoJoao, 18);
-        Link l1 = new Link(saoJoao, morretes, 14);
-        Link l2 = new Link(saoJoao, bufara, 18);
-        Link l3 = new Link(bufara, antonina, 8);
-        Link l4 = new Link(morretes, bufara, 8);
+        Link lab = new Link(a, b, 20);
+        Link lac = new Link(a, c, 20);
+        Link lbd = new Link(b, d, 10);
+        Link lbf = new Link(b, f, 19);
+        Link lch = new Link(c, h, 25);
+        Link lcg = new Link(c, g, 12);
+        Link lgh = new Link(g, h, 12);
+        Link lde = new Link(d, e, 5);
+        Link ldf = new Link(d, f, 7);
+        Link leh = new Link(e, h, 8);
+        Link lfh = new Link(f, h, 6);
         
-        amb.addBidirectionalConection(l0);
-        amb.addBidirectionalConection(l1);
-        amb.addBidirectionalConection(l2);
-        amb.addBidirectionalConection(l3);
-        amb.addBidirectionalConection(l4);
-        //cria o vetor solução
-        List<AbstractAction> solution = new ArrayList<>();
-        solution.add(new GoToAction(l0));
-        solution.add(new GoToAction(l2));
-        solution.add(new GoToAction(l3));
-        
+        amb.addBidirectionalConection(lab);
+        amb.addBidirectionalConection(lac);
+        amb.addBidirectionalConection(lbd);
+        amb.addBidirectionalConection(lbf);
+        amb.addBidirectionalConection(lch);
+        amb.addBidirectionalConection(lcg);
+        amb.addBidirectionalConection(lgh);
+        amb.addBidirectionalConection(lde);
+        amb.addBidirectionalConection(ldf);
+        amb.addBidirectionalConection(leh);
+        amb.addBidirectionalConection(lfh);
+
         List<AbstractAction> actions = new ArrayList<>();
-        actions.add(new GoToAction(l0));
-        actions.add(new GoToAction(l1));
-        actions.add(new GoToAction(l2));
-        actions.add(new GoToAction(l3));
-        actions.add(new GoToAction(l4));
+        actions.add(new GoToAction(lab));
+        actions.add(new GoToAction(lac));
+        actions.add(new GoToAction(lbd));
+        actions.add(new GoToAction(lbf));
+        actions.add(new GoToAction(lch));
+        actions.add(new GoToAction(lcg));
+        actions.add(new GoToAction(lgh));
+        actions.add(new GoToAction(lde));
+        actions.add(new GoToAction(ldf));
+        actions.add(new GoToAction(leh));
+        actions.add(new GoToAction(lfh));
         
-        Agent ag = new Agent(portalGraciosa,antonina,amb,actions,solution);
+        List<AbstractSolver> solvers = new ArrayList<AbstractSolver>();
+        
+        TableHeuristic tableHeuristic = new TableHeuristic(amb,h);
+        ReverseWeightHeuristic revWeightHeuristic = new ReverseWeightHeuristic(amb,h);
+        
+        tableHeuristic.set(new int[]{20,15,10,1,0});
+        
+        solvers.add(new AStarSolver(tableHeuristic));
+        solvers.add(new AStarSolver(revWeightHeuristic));
+                
+        GUI gui = new GUI(solvers);
+                
+        State init = (State) JOptionPane.showInputDialog(gui, "Escolha o estado inicial", "Estado Inicial", JOptionPane.QUESTION_MESSAGE, null, choose.toArray(), 0);
+
+        gui.setVisible(true);
+        
+        if(init == null)
+            init = a;
+        
+        Agent ag = new Agent(init,h,amb,actions,solvers.get(0));
+
         gui.setAgent(ag);
         gui.assignRenderizable(ag);
         gui.assignPrintable(ag);

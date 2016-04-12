@@ -9,7 +9,7 @@ import java.awt.RenderingHints;
 import java.awt.font.TextLayout;
 import javax.swing.JPanel;
 
-public class DrawPanel extends JPanel {
+public class DrawPane extends JPanel {
     protected Graphics2D g2d;
     
     final public Color BG_COLOR         = new Color(0xefffff);
@@ -18,8 +18,8 @@ public class DrawPanel extends JPanel {
     final public Color TEXT_COLOR       = new Color(0x404040);    
     
     final public float VALIGN_MIDDLE    = 0.5f;
-    final public float VALIGN_BOTTON    = 1.0f;
-    final public float VALIGN_TOP       = 0.0f;
+    final public float VALIGN_TOP       = 1.0f;
+    final public float VALIGN_BOTTOM    = 0.0f;
     final public float HALIGN_CENTER    = 0.5f;
     final public float HALIGN_RIGHT     = 1.0f;
     final public float HALIGN_LEFT      = 0.0f;
