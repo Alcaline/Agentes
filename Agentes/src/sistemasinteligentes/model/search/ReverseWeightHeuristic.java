@@ -61,7 +61,7 @@ public class ReverseWeightHeuristic extends HeuristicFunction{
                 }else{
                     if(cust+l.getWeight() < f.leastCust){
                         f.setCust(cust+l.getWeight());
-                        branches.add(f);
+                        //branches.add(f);
                     }
                 }
         for(TreeNode t:branches)

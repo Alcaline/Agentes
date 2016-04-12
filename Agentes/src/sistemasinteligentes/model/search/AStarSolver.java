@@ -78,22 +78,10 @@ public class AStarSolver extends AbstractSolver {
             state = FINISHED;
             return;
         }
-                
+          
         state = EXPANDING;
     }
-    
-    public void select(){
-        message = "Escolhendo nó a ser expandido...\n";
-        
-        frontier.sort(nodeComparator);
-        
-        currentNode = frontier.get(0);
-        
-        message += "O nó escolhido foi: " + currentNode.getState().getName() +"\n";
-        
-        state = EXPLORING;
-    }
-    
+ 
     public void expand(){
         message = "Expandindo o nó...\n";
         
@@ -122,6 +110,23 @@ public class AStarSolver extends AbstractSolver {
         state = SELECTING;
     }
     
+    public void select(){
+        message = "Escolhendo nó a ser expandido...\n";
+        
+        frontier.sort(nodeComparator);
+        
+        currentNode = frontier.get(0);
+        
+        message += "Fronteira:\n";
+        for(int i = 0; i < frontier.size(); i++)
+                message+= "  "+ frontier.get(i).getState().getName()+"["+frontier.get(i).getFCust()+"]\n";
+              
+        
+        message += "O nó escolhido foi: " + currentNode.getState().getName() +"\n";
+        
+        state = EXPLORING;
+    }
+       
     private AStarSolver(){heuristic = null;}
     
     public AStarSolver(HeuristicFunction heuristic){
@@ -222,7 +227,7 @@ public class AStarSolver extends AbstractSolver {
         }
         
         public int getFCust(){
-            return gCust;
+            return fCust;
         }
         
         public void setFCust(int fCust){
@@ -250,7 +255,7 @@ public class AStarSolver extends AbstractSolver {
         }
         
         public Node getBranch(int i){
-            if(i > branches.size() || i < 0)
+            if(i >= branches.size() || i < 0)
                 return null;
             return branches.get(i);
         }

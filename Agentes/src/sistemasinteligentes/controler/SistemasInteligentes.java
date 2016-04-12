@@ -119,12 +119,14 @@ public class SistemasInteligentes {
         List<AbstractSolver> solvers = new ArrayList<AbstractSolver>();
         
         TableHeuristic tableHeuristic = new TableHeuristic(amb,h);
-        ReverseWeightHeuristic revWeightHeuristic = new ReverseWeightHeuristic(amb,h);
+        TableHeuristic tableHeuristic2 = new TableHeuristic(amb,h);
+        //ReverseWeightHeuristic revWeightHeuristic = new ReverseWeightHeuristic(amb,h);
         
-        tableHeuristic.set(new int[]{20,15,10,1,0});
+        tableHeuristic.set(new int[]{40,21,24,13,8,6,12,0});
+        tableHeuristic2.set(new int[]{45,45,1,13,8,6,1,0});
         
         solvers.add(new AStarSolver(tableHeuristic));
-        solvers.add(new AStarSolver(revWeightHeuristic));
+        solvers.add(new AStarSolver(tableHeuristic2));
                 
         GUI gui = new GUI(solvers);
                 
