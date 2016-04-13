@@ -50,7 +50,7 @@ public abstract class HeuristicFunction implements IRenderizable{
     public void render(RenderPanel mp) {
         for(int i = 0; i < ambient.getStateSize(); i++)
             if(get(ambient.getState(i)) >= 0)
-                mp.drawText(ambient.getState(i).getX() + State.STATE_RADIUS, ambient.getState(i).getY() - State.STATE_RADIUS, String.format("%02d", heuristicTable[i]), Agent.AGENT_COLOR, mp.TEXT_FONT, mp.VALIGN_BOTTOM, mp.HALIGN_LEFT);
+                mp.drawText(ambient.getState(i).getX() + State.STATE_RADIUS, ambient.getState(i).getY() - State.STATE_RADIUS, String.format("%02d", heuristicTable[i]), Agent.DESTINY_COLOR, mp.TEXT_FONT, mp.VALIGN_BOTTOM, mp.HALIGN_LEFT);
     
     }
 }

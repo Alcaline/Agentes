@@ -95,8 +95,7 @@ public class AStarSolver extends AbstractSolver {
                         != null){
                     State st = actions.get(i).getFinal();
                     int g = actions.get(i).getWeight();
-                    if(currentNode.getParent() != null)
-                        g += currentNode.getParent().getGCust();
+                    g += currentNode.getGCust();
                     int f = g + heuristic.get(st);
                     
                     Node node = new Node(st, f, g, currentNode);
@@ -189,13 +188,14 @@ public class AStarSolver extends AbstractSolver {
         mp.drawCircle(objective.getX(), objective.getY(), Agent.START_RADIUS, Agent.OBJECTIVE_COLOR, Agent.OBJECTIVE_COLOR);        
         for(Node s: frontier)
             mp.drawCircle(s.getState().getX(), s.getState().getY(), FRONTIER_RADIUS, FRONTIER_COLOR, FRONTIER_COLOR);
-        mp.drawCircle(currentNode.getState().getX(), currentNode.getState().getY(), Agent.DESTINY_RADIUS, Agent.DESTINY_COLOR, Agent.DESTINY_COLOR);
+        mp.drawCircle(currentNode.getState().getX(), currentNode.getState().getY(), Agent.AGENT_RADIUS, Agent.AGENT_COLOR, Agent.AGENT_COLOR);
     }
     
     private void drawVisited(Node node, RenderPanel mp){
-        mp.drawCircle(node.getState().getX(), node.getState().getY(), Agent.SOLUTION_RADIUS, Agent.SOLUTION_COLOR, Agent.SOLUTION_COLOR);        
+        if(!frontier.contains(node))
+            mp.drawCircle(node.getState().getX(), node.getState().getY(), Agent.SOLUTION_RADIUS, Agent.SOLUTION_COLOR, Agent.SOLUTION_COLOR);        
         for(int i = 0; i < node.getBranchesSize(); i++)
-            drawVisited(node.getBranch(i), mp);
+                drawVisited(node.getBranch(i), mp);
     }
 
     private void constructSolution() {
